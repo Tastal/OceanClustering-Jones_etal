@@ -30,7 +30,7 @@ import cartopy.feature as cfeature
 import Print
 import time
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 def plotMapCircular(address, address_fronts, plotFronts, n_comp, allDF, colormap):
     print("Plot.plotMapCircular")
@@ -901,4 +901,4 @@ def plotPCAmplitudeCoefficients(address, address_fronts, runIndex):
 
 ###########
 
-print('Plot runtime = ', time.clock() - start_time,' s')
+print('Plot runtime = ', time.perf_counter() - start_time,' s')

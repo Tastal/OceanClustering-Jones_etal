@@ -22,7 +22,7 @@ import time
 
 import Print
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 def main(address, filename_raw_data, runIndex, subsample_uniform, subsample_random,\
          subsample_inTime, grid, conc, fraction_train, inTime_start, inTime_finish,\
@@ -383,4 +383,4 @@ def centreAndStandardise(address, runIndex, VAR):
     
     return stand, stand_store, var_stand
     
-print('Load runtime = ', time.clock() - start_time,' s')
+print('Load runtime = ', time.perf_counter() - start_time,' s')

@@ -23,7 +23,7 @@ from math import log10, floor
 import Load
 import Print
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 def main(address, filename_raw_data, subsample_bic, repeat_bic, max_groups, grid_bic,\
          conc_bic, size_bic, n_dimen, fraction_nan_samples, fraction_nan_depths, cov_type):
@@ -118,4 +118,4 @@ def bic_calculate(X, max_groups, cov_type):
     bic_score = np.asarray(bic_score).reshape(1,-1)
     return bic_score, lowest_n, n_components_range
 
-print('BIC runtime = ', time.clock() - start_time,' s')
+print('BIC runtime = ', time.perf_counter() - start_time,' s')

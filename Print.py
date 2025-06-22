@@ -17,7 +17,7 @@ from pathlib import Path
 import os.path
 import csv
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 separator = ','
 
@@ -838,4 +838,4 @@ def readReconstruction(address, runIndex, depth, isTrain):
     return lon, lat, dynHeight, X_array, X_array_centred, varTime
         
     
-print('Printing runtime = ', time.clock() - start_time,' s')
+print('Printing runtime = ', time.perf_counter() - start_time,' s')
