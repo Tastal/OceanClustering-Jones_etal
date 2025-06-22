@@ -19,7 +19,7 @@ import time
 import ClassProperties
 import Print
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 def create(address, runIndex, n_comp, cov_type):
     print("GMM.create")
@@ -112,4 +112,4 @@ def GaussianMixtureModel(address, runIndex, n_comp, X_train, cov_type):
     
     return gmm, weights, means, covariances
 
-print('GMM runtime = ', time.clock() - start_time,' s')
+print('GMM runtime = ', time.perf_counter() - start_time,' s')

@@ -40,7 +40,7 @@ import os.path
 import pdb
 
 # start the clock (performance timing)
-start_time = time.clock()
+start_time = time.perf_counter()
 
 # set run mode (BIC, GMM, or Plot)
 # -- BIC = calculates BIC scores for a range of classes
@@ -288,5 +288,5 @@ else:
     print('Parameter run_mode not set properly. Check Main.py')
 
 # print runtime for performance
-print('Main runtime = ', time.clock() - start_time,' s')
+print('Main runtime = ', time.perf_counter() - start_time,' s')
     

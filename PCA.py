@@ -22,7 +22,7 @@ import time
 
 import Print
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 def create(address, runIndex, n_dimen, use_fPCA):
     print("Entering function PCA.create")
@@ -119,7 +119,7 @@ def PrincipalComponentAnalysis(address, runIndex, X_train, \
     
     return pca, pca_store, X_pca_train, variance_sum
 
-print('PCA runtime = ', time.clock() - start_time,' s')
+print('PCA runtime = ', time.perf_counter() - start_time,' s')
 
 ###############################################################################  
 

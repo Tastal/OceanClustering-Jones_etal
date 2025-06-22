@@ -22,7 +22,7 @@ import time
 
 import Print
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 def gmm_reconstruct(address, runIndex, n_comp):
     print("Reconstruct.gmm_reconstruct")
@@ -154,4 +154,4 @@ def full_reconstruct(address, runIndex):
     Print.printReconstruction(address, runIndex, lon, lat, dynHeight,\
                               XR, XRC, varTime, depth, False)
 
-print('Reconstruct runtime = ', time.clock() - start_time,' s')
+print('Reconstruct runtime = ', time.perf_counter() - start_time,' s')
