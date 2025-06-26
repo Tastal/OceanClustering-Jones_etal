@@ -19,6 +19,8 @@ import numpy as np
 import pickle
 from sklearn import preprocessing
 import time
+import os
+from Load_ECCO import decode_llc, decode_llc_grid, transp_tiles
 
 import Print
 
@@ -26,11 +28,13 @@ start_time = time.perf_counter()
 
 def main(address, filename_raw_data, runIndex, subsample_uniform, subsample_random,\
          subsample_inTime, grid, conc, fraction_train, inTime_start, inTime_finish,\
-         fraction_nan_samples, fraction_nan_depths, cov_type, run_bic=False):
+         fraction_nan_samples, fraction_nan_depths, cov_type, run_bic=False, use_ecco=False):
     print("Starting Load.main")
     """ Main function for module"""
-    lon, lat, dynHeight, Tint, Sint, varTime = \
-        load(filename_raw_data)
+    if use_ecco:
+        lon, lat, dynHeight, Tint, Sint, varTime = load_ecco(filename_raw_data)
+    else:
+        lon, lat, dynHeight, Tint, Sint, varTime = load(filename_raw_data)
     print("Removing depths with high NaN counts")
     Tint, Sint, depth = \
         removeDepthFractionNan(Tint, Sint, fraction_nan_depths)
@@ -127,6 +131,28 @@ def load(filename_raw_data):
 #    print("axis 0 = ", np.ma.size(Tint, axis=0)) # axis 0 should be ~290520
 #    print("axis 1 = ", np.ma.size(Tint, axis=1)) # axis 1 should be ~400
     
+    return lon, lat, dynHeight, Tint, Sint, varTime
+
+def load_ecco(base_path, dic_file="DIC.0000002232.data", num_variables=15):
+    """Load ECCO model output in llc270 tile format."""
+    filename = os.path.join(base_path, dic_file)
+    data_raw = decode_llc(filename, num_variables)
+    data_dic = data_raw[0]
+    for ind in range(data_dic.shape[0]):
+        data_dic[ind] = transp_tiles(data_dic[ind])
+    data_dic[data_dic == 0] = np.nan
+
+    xc = decode_llc_grid(os.path.join(base_path, 'XC.data'), 2)
+    xc = transp_tiles(xc)
+    yc = decode_llc_grid(os.path.join(base_path, 'YC.data'), 2)
+    yc = transp_tiles(yc)
+
+    lon = xc.flatten()
+    lat = yc.flatten()
+    Tint = data_dic.reshape(data_dic.shape[0], -1).T
+    Sint = np.full_like(Tint, np.nan)
+    dynHeight = np.full(lon.shape, np.nan)
+    varTime = np.arange(lon.size, dtype=float)
     return lon, lat, dynHeight, Tint, Sint, varTime
 
 def removeDepthFractionNan(VAR, VAR2, fraction_of):
